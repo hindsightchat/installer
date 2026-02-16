@@ -110,6 +110,7 @@ func (w *Window) runUpdate() {
 
 	w.setStatus("stopping running instances...")
 	utils.KillInstances(w.exeName, w.dir)
+	utils.KillInstances("rpc.exe", w.dir)
 
 	w.setStatus("preparing...")
 	time.Sleep(1 * time.Second)
