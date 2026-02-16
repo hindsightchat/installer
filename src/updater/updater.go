@@ -32,15 +32,23 @@ type Window struct {
 
 	exeName string
 	appName string
+
+	fileLog *os.File
 }
 
 func New(appName string, exeName string, zipData, logo []byte) *Window {
+	logFile, err := os.OpenFile("updater.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err == nil {
+		os.Stdout = logFile
+		os.Stderr = logFile
+	}
 	return &Window{
 		dir:     utils.DetectInstallDir(appName, exeName),
 		zipData: zipData,
 		logo:    logo,
 		appName: appName,
 		exeName: exeName,
+		fileLog: logFile,
 	}
 }
 
@@ -65,10 +73,12 @@ func (w *Window) Run() {
 
 	go func() {
 		time.Sleep(500 * time.Millisecond)
+		w.window.RequestFocus()
 		w.runUpdate()
 	}()
 
 	w.window.ShowAndRun()
+
 }
 
 func (w *Window) buildUI() fyne.CanvasObject {
@@ -103,6 +113,11 @@ func (w *Window) buildUI() fyne.CanvasObject {
 
 func (w *Window) setStatus(msg string) {
 	w.status.SetText(msg)
+
+	if w.fileLog != nil {
+		timeStamp := time.Now().Format("2006-01-02 15:04:05")
+		fmt.Fprintf(w.fileLog, "[%s] %s\n", timeStamp, msg)
+	}
 }
 
 func (w *Window) runUpdate() {

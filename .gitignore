@@ -32,3 +32,5 @@ go.work.sum
 # .vscode/
 
 app.zip
+
+fyne_metadata_init.go
