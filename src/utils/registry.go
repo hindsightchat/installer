@@ -49,3 +49,12 @@ func readRegistry(appName string) (string, bool) {
 	}
 	return path, true
 }
+
+func WriteRegistry(appName, path string) error {
+	k, _, err := registry.CreateKey(registry.CURRENT_USER, `Software\`+appName, registry.SET_VALUE)
+	if err != nil {
+		return err
+	}
+	defer k.Close()
+	return k.SetStringValue("path", path)
+}

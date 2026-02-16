@@ -14,9 +14,8 @@ var AppZipData []byte
 var LogoPng []byte
 
 const (
-	AppName     = "Hindsight Chat"
-	ExeName     = "hindsightchat.exe"
-	RegistryKey = `Software\HindsightChat`
+	AppName = "Hindsight Chat"
+	ExeName = "hindsightchat.exe"
 )
 
 func main() {

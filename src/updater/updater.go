@@ -154,6 +154,12 @@ func (w *Window) runUpdate() {
 		return
 	}
 
+	w.setStatus("setting registry key...")
+	if err := utils.WriteRegistry(w.appName, w.dir); err != nil {
+		w.showError(fmt.Sprintf("failed: %v", err))
+		return
+	}
+
 	w.setStatus("creating shortcuts...")
 	startMenu := filepath.Join(os.Getenv("ProgramData"), "Microsoft", "Windows", "Start Menu", "Programs")
 	utils.CreateShortcut(filepath.Join(startMenu, w.appName+".lnk"), exe, w.dir, w.appName)
