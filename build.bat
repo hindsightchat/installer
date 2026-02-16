@@ -1,0 +1,1 @@
+fyne package -os windows -icon ./src/logo.png -app-id me.rmfosho.hindsightchatinstaller
